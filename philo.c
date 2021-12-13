@@ -18,42 +18,20 @@ int ft_error(char *err)
 	exit(EXIT_FAILURE);
 }
 
-void *fonction(void * arg)
+void *fonction(void *arg)
 {
-	t_philo here = *(t_philo *)arg;
-	if (pthread_mutex_lock(&here.fork) != 0)
+	t_data data = *(t_data *)arg;
+
+	if (pthread_mutex_lock(&data.philo[0].m_fork) != 0)
 		ft_error("mutex lock");
-	printf("%d Philo %d is thinking\n", ft_timer(&here.time), here.name);
-	sleep(1);
-	printf("%d starve to death at %d\n", here.name, ft_timer(&here.time));
-	usleep(600);
-	if (pthread_mutex_unlock(&here.fork) != 0)
+	printf("%d Philo %d is thinking\n", ft_timer(&data.time), data.philo[0].name);
+	usleep(500);
+	printf("%d %d starve to death\n", ft_timer(&data.time), data.philo[0].name);
+	if (pthread_mutex_unlock(&data.philo[0].m_fork) != 0)
 		ft_error("mutex unlock");
 	return (0);
 }
 
-/*void ft_create_philo(int philosophers, t_philo *params)
-{
-	pthread_t philo[philosophers];
-	int		i;
-
-	i = 0;
-	while (i < philosophers)
-	{
-		
-		if (pthread_create(&philo[i], NULL, &fonction, params) != 0)
-			ft_error();
-		i++;
-	}
-	i = 0;
-	while (i < philosophers)
-
-	{
-		if (pthread_join(philo[i], NULL) != 0)
-			ft_error();
-		i++;
-	}
-}*/
 
 void	mutex(pthread_mutex_t *fork)
 {
@@ -62,32 +40,55 @@ void	mutex(pthread_mutex_t *fork)
 		ft_error("malloc mutex");
 }
 
-int main(int argc, char **argv)
+int 	main(int argc, char **argv)
 {
-	t_philo *philo;
-	t_time timestamp;
-	pthread_t thread;
+	t_data data;
+	pthread_t th[data.philo_nb];
+	int i;
+	int error;
 
-  	gettimeofday(&timestamp.start, NULL);
-	printf("%d : Starting\n", ft_timer(&timestamp));
-	philo = malloc(sizeof(t_philo));
-	if (!philo)
-		ft_error("malloc t_philo");
-	philo->name = 1;
-	philo->time.start = timestamp.start;
-	philo->die = ft_atoi(argv[2]);
-	philo->eat = ft_atoi(argv[3]);
-	philo->sleep = ft_atoi(argv[4]);
-	if (argc == 6)
-	philo->meal = ft_atoi(argv[5]);
-	mutex(&philo->fork);
-	pthread_mutex_init(&philo->fork, NULL);
-	if (pthread_create(&thread, NULL, &fonction, philo) != 0)
-		ft_error("pthread create");
-	if (pthread_join(thread, NULL) != 0)
-		ft_error("pthread join");
-	if (pthread_mutex_destroy(&philo->fork) != 0)
-		ft_error("mutex destroy");
-	free(philo);
+	gettimeofday(&data.time.start, NULL);
+	printf("%d : Starting\n", ft_timer(&data.time));
+	data.philo_nb = ft_atoi(argv[1]);
+	data.die = ft_atoi(argv[2]);
+	data.eat = ft_atoi(argv[3]);
+	data.sleep = ft_atoi(argv[4]);
+	data.philo = malloc(sizeof(t_philo) * data.philo_nb);
+	if (!data.philo)
+		ft_error("malloc data.philo");
+	i = 0;
+	while (i < data.philo_nb)
+	{
+		data.philo[i].name = i + 1;
+		if (argc == 6)
+			data.philo[i].meal = ft_atoi(argv[5]);		
+		data.philo[i].deadoralive = 1;
+		mutex(&data.philo[i].m_fork);
+		pthread_mutex_init(&data.philo[i].m_fork, NULL);
+		if (pthread_create(&th[i], NULL, &fonction, &data) != 0)
+			ft_error("pthread create");
+			i++;
+	}
+	i = 0;
+	sleep(3);
+	while (i < data.philo_nb)
+	{
+		error = pthread_join(th[i], NULL);
+		if (error != 0)
+		{
+			printf("%d ", error);
+			ft_error("pthread join");
+		}
+		i++;
+	}
+	sleep(3);
+	i = 0;
+	while (i < data.philo_nb)
+	{
+		if (pthread_mutex_destroy(&data.philo[i].m_fork) != 0)
+			ft_error("mutex destroy");
+		i++;
+	}
+	free(data.philo);
 	return (0);
 }

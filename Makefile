@@ -12,7 +12,7 @@
 
 NAME	= philo
 
-SRCS	= philo.c ft_atoi.c time.c lifeanddeathofaphilosopher.c
+SRCS	= philo.c ft_atoi.c time.c 
 
 OBJSD	= .obj/
 

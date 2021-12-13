@@ -47,6 +47,6 @@ typedef struct s_data
     int die;
 }   t_data;
 int ft_atoi(const char *str);
-int ft_timer(t_data *data);
+int ft_timer(t_time *time);
 
 #endif
