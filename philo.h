@@ -20,24 +20,32 @@
 # include <stdio.h>
 # include <sys/time.h>
 
-typedef struct s_data
+typedef struct s_time
 {
     struct timeval  start;
 	struct timeval  current;
-}   t_data;
+}   t_time;
 
 typedef struct s_philo
 {
-    pthread_mutex_t fork;
+    pthread_mutex_t m_fork;
+    pthread_mutex_t m_borrow;
     int name;
-	int die;
-    int eat;
-    int sleep;
+	int deadoralive;
     int meal;
-    t_data time;
+    struct timeval last_meal;
 }	t_philo;
 
-
+typedef struct s_data
+{
+    t_time time;
+    t_philo *philo;
+    int philo_nb;
+    pthread_mutex_t m_display;
+    int sleep;
+    int eat;
+    int die;
+}   t_data;
 int ft_atoi(const char *str);
 int ft_timer(t_data *data);
 

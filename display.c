@@ -1,27 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   time.c                                             :+:      :+:    :+:   */
+/*   display.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/10 11:35:51 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/10 11:36:59 by cassassi         ###   ########.fr       */
+/*   Created: 2021/12/13 15:13:12 by cassassi          #+#    #+#             */
+/*   Updated: 2021/12/13 15:13:16 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-
-int	ft_timer(t_data *data)
+void    ft_display_message(int str, t_philo *philo)
 {
-    long long sec;
-    long long usec;
-    int ms;
+    if
+    printf("%d %d has taken a fork\n", ft_timer(&philo.time), philo.name);
+    printf("%d %d is eating\n", ft_timer(&philo.time), philo.name);
+    printf("%d %d is sleeping\n", ft_timer(&philo.time), philo.name);
+    printf("%d %d is thinking\n", ft_timer(&philo.time), philo.name);
+    printf("%d %d died\n", ft_timer(&philo.time), philo.name);
 
-    gettimeofday(&data->current, NULL);
-    sec = (data->current.tv_sec - data->start.tv_sec) * 1000;
-    usec = (data->current.tv_usec - data->start.tv_usec) / 1000;
-    ms = sec + usec;
-	return (ms);
 }
