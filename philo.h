@@ -20,6 +20,12 @@
 # include <stdio.h>
 # include <sys/time.h>
 
+# define EAT 22
+# define SLEEP 23
+# define FORK 24
+# define THINK 25
+# define DEATH 26
+
 typedef struct s_time
 {
     struct timeval  start;
@@ -28,8 +34,8 @@ typedef struct s_time
 
 typedef struct s_philo
 {
-    pthread_mutex_t m_fork;
-    pthread_mutex_t m_borrow;
+    pthread_mutex_t fork;
+    pthread_mutex_t borrow;
     int name;
 	int deadoralive;
     int meal;
@@ -39,14 +45,19 @@ typedef struct s_philo
 typedef struct s_data
 {
     t_time time;
-    t_philo *philo;
+    t_philo philo;
     int philo_nb;
-    pthread_mutex_t m_display;
     int sleep;
     int eat;
     int die;
 }   t_data;
+
+int ft_error(char *err);
 int ft_atoi(const char *str);
 int ft_timer(t_time *time);
-
+void ft_fork(t_data *data);
+void ft_eat(t_data *data);
+void ft_sleep(t_data *data);
+void ft_think(t_data *data);
+void    ft_display_message(int str, t_data *data);
 #endif

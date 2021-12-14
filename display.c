@@ -12,13 +12,17 @@
 
 #include "philo.h"
 
-void    ft_display_message(int str, t_philo *philo)
+void    ft_display_message(int str, t_data *data)
 {
-    if
-    printf("%d %d has taken a fork\n", ft_timer(&philo.time), philo.name);
-    printf("%d %d is eating\n", ft_timer(&philo.time), philo.name);
-    printf("%d %d is sleeping\n", ft_timer(&philo.time), philo.name);
-    printf("%d %d is thinking\n", ft_timer(&philo.time), philo.name);
-    printf("%d %d died\n", ft_timer(&philo.time), philo.name);
+    if (str == FORK)
+        printf("%d %d has taken a fork\n", ft_timer(&data->time), data->philo.name);
+    else if (str == EAT)
+        printf("%d %d is eating\n", ft_timer(&data->time), data->philo.name);
+    else if (str == SLEEP)
+        printf("%d %d is sleeping\n", ft_timer(&data->time), data->philo.name);
+    else if (str == THINK)
+        printf("%d %d is thinking\n", ft_timer(&data->time), data->philo.name);
+    else if (str == DEATH)
+        printf("%d %d died\n", ft_timer(&data->time), data->philo.name);
 
 }

@@ -12,36 +12,35 @@
 
 #include "philo.h"
 
-ft_fork
+void ft_fork(t_data *data)
 {
-    if (pthread_mutex_lock(&here.fork) != 0)
-	    ft_error("mutex lock");
-    ft_display_message(FORK);
+
+    ft_display_message(FORK, data);
+    ft_eat(data);
+
+
 }
 
-ft_eat
+void ft_eat(t_data *data)
 {
-    ft_fork();
-    ft_display_message(EAT);
-    usleep(philo.eat * 1000);
-    if (pthread_mutex_unlock(&here.fork) != 0)
-		ft_error("mutex unlock");
+    ft_display_message(EAT, data);
+    usleep(data->eat * 1000);
 }
-ft_sleep
+void ft_sleep(t_data *data)
 {
-    ft_display_message(SLEEP);
-    usleep(philo.sleep * 1000);
+    ft_display_message(SLEEP, data);
+    usleep(data->sleep * 1000);
 }
-ft_think
+void ft_think(t_data *data)
 {
-    ft_display_message(THINK);
+    ft_display_message(THINK, data);
 }
-
+/*
 ft_die
 {
         if (pthread_mutex_lock(&here.fork) != 0)
 	    ft_error("mutex lock");
-        ft_display_message(DEAD);
+        ft_display_message(DEATH);
     	if (pthread_mutex_unlock(&here.fork) != 0)
 		ft_error("mutex unlock");
-}
+}*/
