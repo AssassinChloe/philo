@@ -14,8 +14,9 @@
 
 int ft_error(char *err)
 {
-	printf("Error %s\n", err);
-	exit(EXIT_FAILURE);
+	printf("Test %s\n", err);
+	//exit(EXIT_FAILURE);
+	return(0);
 }
 
 void *fonction(void *arg)
@@ -23,18 +24,10 @@ void *fonction(void *arg)
 	t_data data = *(t_data *)arg;
     while(data.philo.meal > 0)
 	{
-	if (pthread_mutex_lock(&data.philo.fork) != 0)
-	    ft_error("mutex lock");
-    if (pthread_mutex_lock(&data.philo.borrow) != 0)
-	    ft_error("mutex lock");
-	ft_fork(&data);
-    if (pthread_mutex_unlock(&data.philo.fork) != 0)
-		ft_error("mutex unlock");
-	if (pthread_mutex_unlock(&data.philo.borrow) != 0)
-	    ft_error("mutex unlock"); 
-	ft_sleep(&data);
-	ft_think(&data);
-	data.philo.meal--;
+		ft_fork(&data);
+ 		ft_sleep(&data);
+		ft_think(&data);
+		data.philo.meal--;
 	}
 	return (0);
 }
@@ -47,18 +40,9 @@ void	mutex(pthread_mutex_t *fork)
 		ft_error("malloc mutex");
 }
 
-void	borrow(t_data *data, int philo_nb)
+void	borrow(pthread_mutex_t *fork, pthread_mutex_t *borrow)
 {
-	int i;
-
-	i = 0;
-	
-	while (i < (philo_nb - 1))
-	{
-			data[i].philo.borrow = data[i + 1].philo.fork;
-			i++;
-	}
-	data[(philo_nb - 1)].philo.borrow = data[0].philo.fork;
+	borrow = fork;
 }
 
 int 	main(int argc, char **argv)
@@ -94,7 +78,16 @@ int 	main(int argc, char **argv)
 		pthread_mutex_init(&data[i].philo.fork, NULL);
 		i++;
 	}
-	borrow(data, philosophers);
+	i = 0;
+	while (i < (philosophers))
+	{
+		if (i == (philosophers - 1))
+			borrow(&data[i].philo.fork, &data[0].philo.fork);
+		else
+			borrow(&data[i].philo.fork, &data[(i + 1)].philo.fork);
+		i++;
+	}
+	
 	i = 0;
 	while (i < philosophers)
 	{

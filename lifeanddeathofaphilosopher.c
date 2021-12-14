@@ -14,9 +14,16 @@
 
 void ft_fork(t_data *data)
 {
-
+	if (pthread_mutex_lock(&data->philo.fork) != 0)
+	    ft_error("mutex lock");
+    if (pthread_mutex_lock(&data->philo.borrow) == 0)
+	    ft_error("mutex lock");
     ft_display_message(FORK, data);
     ft_eat(data);
+    if (pthread_mutex_unlock(&data->philo.fork) != 0)
+		ft_error("mutex unlock");
+	if (pthread_mutex_unlock(&data->philo.borrow) == 0)
+	    ft_error("mutex unlock");
 
 
 }
