@@ -35,7 +35,7 @@ typedef struct s_time
 typedef struct s_philo
 {
     pthread_mutex_t fork;
-    pthread_mutex_t borrow;
+    pthread_mutex_t *borrow;
     int name;
 	int deadoralive;
     int meal;
@@ -60,4 +60,5 @@ void ft_eat(t_data *data);
 void ft_sleep(t_data *data);
 void ft_think(t_data *data);
 void    ft_display_message(int str, t_data *data);
+int ft_last_meal(t_data *data);
 #endif

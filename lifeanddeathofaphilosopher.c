@@ -14,18 +14,27 @@
 
 void ft_fork(t_data *data)
 {
+    int time;
 	if (pthread_mutex_lock(&data->philo.fork) != 0)
-	    ft_error("mutex lock");
-    if (pthread_mutex_lock(&data->philo.borrow) == 0)
-	    ft_error("mutex lock");
+	    ft_error("mutex fork lock");
+    if (pthread_mutex_lock(data->philo.borrow) != 0)
+	    ft_error("mutex borrow lock");
+        if ((time = ft_last_meal(data)) > data->die)
+		{
+			data->philo.deadoralive = 0;
+			printf("%d philo est mort %d :'( \n", data->philo.name, time);
+            if (pthread_mutex_unlock(&data->philo.fork) != 0)
+		        ft_error("mutex fork unlock");
+	        if (pthread_mutex_unlock(data->philo.borrow) != 0)
+	            ft_error("mutex borrow unlock");
+                return ;
+		}
     ft_display_message(FORK, data);
     ft_eat(data);
     if (pthread_mutex_unlock(&data->philo.fork) != 0)
-		ft_error("mutex unlock");
-	if (pthread_mutex_unlock(&data->philo.borrow) == 0)
-	    ft_error("mutex unlock");
-
-
+		ft_error("mutex fork unlock");
+	if (pthread_mutex_unlock(data->philo.borrow) != 0)
+	    ft_error("mutex borrow unlock");
 }
 
 void ft_eat(t_data *data)

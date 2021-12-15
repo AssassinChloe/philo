@@ -14,20 +14,26 @@
 
 int ft_error(char *err)
 {
-	printf("Test %s\n", err);
-	//exit(EXIT_FAILURE);
-	return(0);
+	printf("Error %s\n", err);
+	exit(EXIT_FAILURE);
+	//return(0);
 }
 
 void *fonction(void *arg)
 {
-	t_data data = *(t_data *)arg;
-    while(data.philo.meal > 0)
+	t_data *data = (t_data *)arg;
+	
+    while(data->philo.meal > 0 && data->philo.deadoralive == 1)
 	{
-		ft_fork(&data);
- 		ft_sleep(&data);
-		ft_think(&data);
-		data.philo.meal--;
+		
+		//printf("Left meals for %d = %d\n", data->philo.name, data->philo.meal);
+		/*printf("%d fork : %p, borrow %p\n", data->philo.name, &data->philo.fork, data->philo.borrow);*/
+		ft_fork(data);
+		if (data->philo.deadoralive == 0)
+			return (0);
+ 		ft_sleep(data);
+		ft_think(data);
+		data->philo.meal--;
 	}
 	return (0);
 }
@@ -38,11 +44,6 @@ void	mutex(pthread_mutex_t *fork)
 	fork = malloc(sizeof(pthread_mutex_t));
 	if (!fork)
 		ft_error("malloc mutex");
-}
-
-void	borrow(pthread_mutex_t *fork, pthread_mutex_t *borrow)
-{
-	borrow = fork;
 }
 
 int 	main(int argc, char **argv)
@@ -72,7 +73,7 @@ int 	main(int argc, char **argv)
 		data[i].philo.name = i + 1;
 		if (argc == 6)
 			data[i].philo.meal = ft_atoi(argv[5]);		
-
+		gettimeofday(&data->philo.last_meal, NULL);
 		data[i].philo.deadoralive = 1;
 		mutex(&data[i].philo.fork);
 		pthread_mutex_init(&data[i].philo.fork, NULL);
@@ -82,19 +83,19 @@ int 	main(int argc, char **argv)
 	while (i < (philosophers))
 	{
 		if (i == (philosophers - 1))
-			borrow(&data[i].philo.fork, &data[0].philo.fork);
+			data[i].philo.borrow = &data[0].philo.fork;
 		else
-			borrow(&data[i].philo.fork, &data[(i + 1)].philo.fork);
+			data[i].philo.borrow = &data[i + 1].philo.fork;
 		i++;
 	}
 	
 	i = 0;
 	while (i < philosophers)
 	{
-
+	//	printf("%d fork : %p, borrow %p\n", data[i].philo.name, &data[i].philo.fork, data[i].philo.borrow);
 		if (pthread_create(&th[i], NULL, &fonction, &data[i]) != 0)
 			ft_error("pthread create");
-			i++;
+		i++;
 		usleep(50);
 	}
 	i = 0;
