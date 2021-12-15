@@ -26,7 +26,7 @@ int	ft_timer(t_time *time)
 	return (ms);
 }
 
-int ft_last_meal(t_data *data)
+struct timeval ft_last_meal(t_data *data)
 {
     struct timeval new_meal;
     long long sec;
@@ -37,6 +37,10 @@ int ft_last_meal(t_data *data)
     sec = (new_meal.tv_sec - data->philo.last_meal.tv_sec) * 1000;
     usec = (new_meal.tv_usec - data->philo.last_meal.tv_usec) / 1000;
     ms = sec + usec;
-    data->philo.last_meal = new_meal;
-    return(ms);
+    if (ms > data->die)
+    {
+        *data->philo.deadoralive = 0;
+		ft_die(data);
+    }
+    return(new_meal);
 }

@@ -14,21 +14,11 @@
 
 void ft_fork(t_data *data)
 {
-    int time;
-	if (pthread_mutex_lock(&data->philo.fork) != 0)
+    if (pthread_mutex_lock(&data->philo.fork) != 0)
 	    ft_error("mutex fork lock");
     if (pthread_mutex_lock(data->philo.borrow) != 0)
 	    ft_error("mutex borrow lock");
-        if ((time = ft_last_meal(data)) > data->die)
-		{
-			data->philo.deadoralive = 0;
-			printf("%d philo est mort %d :'( \n", data->philo.name, time);
-            if (pthread_mutex_unlock(&data->philo.fork) != 0)
-		        ft_error("mutex fork unlock");
-	        if (pthread_mutex_unlock(data->philo.borrow) != 0)
-	            ft_error("mutex borrow unlock");
-                return ;
-		}
+    data->philo.last_meal = ft_last_meal(data);
     ft_display_message(FORK, data);
     ft_eat(data);
     if (pthread_mutex_unlock(&data->philo.fork) != 0)
@@ -39,24 +29,23 @@ void ft_fork(t_data *data)
 
 void ft_eat(t_data *data)
 {
+    ft_last_meal(data);
     ft_display_message(EAT, data);
     usleep(data->eat * 1000);
 }
 void ft_sleep(t_data *data)
 {
+    ft_last_meal(data);
     ft_display_message(SLEEP, data);
     usleep(data->sleep * 1000);
 }
 void ft_think(t_data *data)
 {
+    ft_last_meal(data);
     ft_display_message(THINK, data);
 }
-/*
-ft_die
+
+void    ft_die(t_data *data)
 {
-        if (pthread_mutex_lock(&here.fork) != 0)
-	    ft_error("mutex lock");
-        ft_display_message(DEATH);
-    	if (pthread_mutex_unlock(&here.fork) != 0)
-		ft_error("mutex unlock");
-}*/
+        ft_display_message(DEATH, data);
+}
