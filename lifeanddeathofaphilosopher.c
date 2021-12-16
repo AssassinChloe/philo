@@ -14,12 +14,10 @@
 
 void ft_fork(t_data *data)
 {
-    if (pthread_mutex_lock(&data->philo.fork) != 0)
-	    ft_error("mutex fork lock");
-    if (pthread_mutex_lock(data->philo.borrow) != 0)
-	    ft_error("mutex borrow lock");
-    data->philo.last_meal = ft_last_meal(data);
+    pthread_mutex_lock(&data->philo.fork);
+    pthread_mutex_lock(data->philo.borrow);
     ft_display_message(FORK, data);
+    data->philo.last_meal = ft_last_meal(data);
     ft_eat(data);
     if (pthread_mutex_unlock(&data->philo.fork) != 0)
 		ft_error("mutex fork unlock");
@@ -29,23 +27,53 @@ void ft_fork(t_data *data)
 
 void ft_eat(t_data *data)
 {
-    ft_last_meal(data);
+    //data->philo.i = data->eat;
     ft_display_message(EAT, data);
+
+    // while (*data->philo.deadoralive == 1 && data->philo.i > 0)
+    // {    
+    //     if (data->philo.i > 10)
+    //     {
+    //         usleep(10000);
+    //         data->philo.i -= 10;
+    //         ft_last_meal(data);
+    //     }
+    //     else
+    //     {
+    //         usleep(data->philo.i * 1000);
+    //         data->philo.i = 0;
+    //     }
+    // }
     usleep(data->eat * 1000);
 }
 void ft_sleep(t_data *data)
 {
-    ft_last_meal(data);
+    // data->philo.i = data->sleep;
     ft_display_message(SLEEP, data);
+    ft_last_meal(data);
+    // while (*data->philo.deadoralive == 1 && data->philo.i > 0)
+    // {
+    //     if (data->philo.i > 10)
+    //     {
+    //         usleep(10000);
+    //         data->philo.i = data->philo.i - 10;
+    //         ft_last_meal(data);
+    //     }
+    //     else
+    //     {
+    //         usleep(data->philo.i*1000);
+    //         data->philo.i = 0;
+    //     }
+    // }
     usleep(data->sleep * 1000);
 }
 void ft_think(t_data *data)
 {
-    ft_last_meal(data);
     ft_display_message(THINK, data);
 }
 
 void    ft_die(t_data *data)
 {
         ft_display_message(DEATH, data);
+        return ;
 }

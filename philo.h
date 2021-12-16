@@ -38,6 +38,7 @@ typedef struct s_philo
     pthread_mutex_t *borrow;
     int name;
 	int *deadoralive;
+    int i;
     int meal;
     struct timeval last_meal;
 }	t_philo;
@@ -50,6 +51,7 @@ typedef struct s_data
     int sleep;
     int eat;
     int die;
+    struct timeval new_meal;
     pthread_mutex_t *display;
 }   t_data;
 
@@ -60,6 +62,11 @@ void ft_fork(t_data *data);
 void ft_eat(t_data *data);
 void ft_sleep(t_data *data);
 void ft_think(t_data *data);
+void    ft_die(t_data *data);
 void    ft_display_message(int str, t_data *data);
 struct timeval ft_last_meal(t_data *data);
+
+void	ft_putchar(char c);
+void	ft_putstr(char *s);
+void	ft_putnbr(int n);
 #endif

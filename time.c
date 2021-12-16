@@ -15,8 +15,8 @@
 
 int	ft_timer(t_time *time)
 {
-    long long sec;
-    long long usec;
+    int sec;
+    int usec;
     int ms;
 
     gettimeofday(&time->current, NULL);
@@ -28,19 +28,12 @@ int	ft_timer(t_time *time)
 
 struct timeval ft_last_meal(t_data *data)
 {
-    struct timeval new_meal;
-    long long sec;
-    long long usec;
-    int ms;
-
-    gettimeofday(&new_meal, NULL);
-    sec = (new_meal.tv_sec - data->philo.last_meal.tv_sec) * 1000;
-    usec = (new_meal.tv_usec - data->philo.last_meal.tv_usec) / 1000;
-    ms = sec + usec;
-    if (ms > data->die)
+    gettimeofday(&data->new_meal, NULL);
+    if ((int)((data->new_meal.tv_sec - data->philo.last_meal.tv_sec) * 1000) 
+    +((data->new_meal.tv_usec - data->philo.last_meal.tv_usec) / 1000) > data->die)
     {
         *data->philo.deadoralive = 0;
 		ft_die(data);
     }
-    return(new_meal);
+    return(data->new_meal);
 }

@@ -17,15 +17,40 @@ void    ft_display_message(int str, t_data *data)
     if(pthread_mutex_lock(data->display) != 0)
         ft_error("lock display");
     if (str == FORK && *data->philo.deadoralive == 1)
-        printf("%d %d has taken a fork\n", ft_timer(&data->time), data->philo.name);
+    {
+        ft_putnbr(ft_timer(&data->time));
+        ft_putchar(' ');
+        ft_putnbr(data->philo.name);
+        ft_putstr(" has taken a fork\n");
+    }
     else if (str == EAT && *data->philo.deadoralive == 1)
-        printf("%d %d is eating\n", ft_timer(&data->time), data->philo.name);
+    {       
+        ft_putnbr(ft_timer(&data->time));
+        ft_putchar(' ');
+        ft_putnbr(data->philo.name);
+        ft_putstr(" is eating\n");
+    }
     else if (str == SLEEP && *data->philo.deadoralive == 1)
-        printf("%d %d is sleeping\n", ft_timer(&data->time), data->philo.name);
+        {       
+        ft_putnbr(ft_timer(&data->time));
+        ft_putchar(' ');
+        ft_putnbr(data->philo.name);
+        ft_putstr(" is sleeping\n");
+        } 
     else if (str == THINK && *data->philo.deadoralive == 1)
-        printf("%d %d is thinking\n", ft_timer(&data->time), data->philo.name);
+            {       
+        ft_putnbr(ft_timer(&data->time));
+        ft_putchar(' ');
+        ft_putnbr(data->philo.name);
+        ft_putstr(" is thinking\n");
+    }
     else if (str == DEATH)
-        printf("%d %d died\n", ft_timer(&data->time), data->philo.name);
+        {       
+        ft_putnbr(ft_timer(&data->time));
+        ft_putchar(' ');
+        ft_putnbr(data->philo.name);
+        ft_putstr(" died\n");
+    }
     if(pthread_mutex_unlock(data->display) != 0)
-        ft_error("lock display");
+        ft_error("unlock display");
 }

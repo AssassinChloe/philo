@@ -12,7 +12,7 @@
 
 NAME	= philo
 
-SRCS	= philo.c ft_atoi.c time.c lifeanddeathofaphilosopher.c display.c
+SRCS	= philo.c ft_atoi.c time.c lifeanddeathofaphilosopher.c display.c puttext.c
 
 OBJSD	= .obj/
 
@@ -22,7 +22,7 @@ INC		= -I philo.h
 
 CC		= clang
 
-FLAGS	= -Wall -Wextra -Werror -fsanitize=address
+FLAGS	= -Wall -Wextra -Werror
 
 all :		$(NAME)
 
