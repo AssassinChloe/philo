@@ -40,7 +40,7 @@ typedef struct s_philo
 	int *deadoralive;
     int i;
     int meal;
-    struct timeval last_meal;
+    struct timeval *last_meal;
 }	t_philo;
 
 typedef struct s_data
@@ -64,7 +64,7 @@ void ft_sleep(t_data *data);
 void ft_think(t_data *data);
 void    ft_die(t_data *data);
 void    ft_display_message(int str, t_data *data);
-struct timeval ft_last_meal(t_data *data);
+void ft_last_meal(t_data *data);
 
 void	ft_putchar(char c);
 void	ft_putstr(char *s);

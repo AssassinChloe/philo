@@ -18,12 +18,27 @@ int ft_error(char *err)
 	exit(EXIT_FAILURE);
 }
 
+void *	isalive(void *arg)
+{
+	t_data * data = (t_data *)arg;
+	usleep(data->die * 1000);
+	ft_last_meal(data);
+	return (0);
+}
+
 void *fonction(void *arg)
 {
 	t_data *data = (t_data *)arg;
+	pthread_t checklife;
 	
     while(data->philo.meal != 0 && *data->philo.deadoralive == 1)
 	{
+		pthread_create(&checklife, NULL, &isalive, data);
+		if (data->philo.borrow == NULL)
+		{
+			pthread_join(checklife, NULL);
+			return (0);
+		}
 		ft_fork(data);
  		ft_sleep(data);
 		ft_think(data);
@@ -98,7 +113,7 @@ int 	main(int argc, char **argv)
 	while (i < philosophers)
 	{	
 		data[i].time.start = start;
-		data[i].philo.last_meal = start;
+		data[i].philo.last_meal = &start;
 		if (pthread_create(&th[i], NULL, &fonction, &data[i]) != 0)
 			ft_error("pthread create");
 		i++;
@@ -117,12 +132,10 @@ int 	main(int argc, char **argv)
 	i = 0;
 	while (i < philosophers)
 	{
-		if (pthread_mutex_destroy(&data[i].philo.fork) != 0)
-			ft_error("mutex destroy");
+		pthread_mutex_destroy(&data[i].philo.fork);
 		i++;
 	}
-	if (pthread_mutex_destroy(display) != 0)
-		ft_error("mutex display destroy");
+	pthread_mutex_destroy(display);
 	free(data);
 	free(th);
 	free(dead);
