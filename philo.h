@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:44:38 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/08 15:51:01 by cassassi         ###   ########.fr       */
+/*   Updated: 2021/12/21 09:38:34 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,7 @@ void ft_last_meal(t_data *data);
 void	ft_putchar(char c);
 void	ft_putstr(char *s);
 void	ft_putnbr(int n);
+void	ft_check_last_meal(t_data *data);
+
+
 #endif

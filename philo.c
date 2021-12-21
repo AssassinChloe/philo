@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:38:06 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/08 15:50:58 by cassassi         ###   ########.fr       */
+/*   Updated: 2021/12/21 09:38:37 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void *	isalive(void *arg)
 {
 	t_data * data = (t_data *)arg;
 	usleep(data->die * 1000);
-	ft_last_meal(data);
+	ft_check_last_meal(data);
 	return (0);
 }
 

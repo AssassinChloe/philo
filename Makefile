@@ -6,7 +6,7 @@
 #    By: cassassi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/03 13:27:24 by cassassi          #+#    #+#              #
-#    Updated: 2021/12/08 15:32:43 by cassassi         ###   ########.fr        #
+#    Updated: 2021/12/21 09:33:57 by cassassi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,11 +18,11 @@ OBJSD	= .obj/
 
 OBJS	= $(addprefix $(OBJSD), $(SRCS:%.c=%.o))
 
-INC		= -I philo.h
+INC	= -I philo.h
 
-CC		= clang
+CC	= clang
 
-FLAGS	= -Wall -Wextra -Werror
+FLAGS	= -pthread -Wall -Wextra -Werror
 
 all :		$(NAME)
 
