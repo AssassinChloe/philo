@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:13:12 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/13 15:13:16 by cassassi         ###   ########.fr       */
+/*   Updated: 2021/12/21 16:07:50 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,28 @@
 void    ft_display_message(int str, t_data *data)
 {
     pthread_mutex_lock(data->display);
-    if (str == FORK && *data->philo.deadoralive == 1)
+    if (str == FORK && (*data->philo.deadoralive == 1 || *data->philo.deadoralive == -2))
     {
         ft_putnbr(ft_timer(&data->time));
         ft_putchar(' ');
         ft_putnbr(data->philo.name);
         ft_putstr(" has taken a fork\n");
     }
-    else if (str == EAT && *data->philo.deadoralive == 1)
+    else if (str == EAT && (*data->philo.deadoralive == 1 || *data->philo.deadoralive == -2))
     {   
-   
         ft_putnbr(ft_timer(&data->time));
         ft_putchar(' ');
         ft_putnbr(data->philo.name);
         ft_putstr(" is eating\n");
     }
-    else if (str == SLEEP && *data->philo.deadoralive == 1)
+    else if (str == SLEEP && (*data->philo.deadoralive == 1 || *data->philo.deadoralive == -2))
     {       
         ft_putnbr(ft_timer(&data->time));
         ft_putchar(' ');
         ft_putnbr(data->philo.name);
         ft_putstr(" is sleeping\n");
     } 
-    else if (str == THINK && *data->philo.deadoralive == 1)
+    else if (str == THINK && (*data->philo.deadoralive == 1 || *data->philo.deadoralive == -2))
     {       
         ft_putnbr(ft_timer(&data->time));
         ft_putchar(' ');

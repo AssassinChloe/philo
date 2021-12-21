@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/10 11:35:51 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/21 09:37:59 by cassassi         ###   ########.fr       */
+/*   Updated: 2021/12/21 14:23:22 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,10 @@ void ft_last_meal(t_data *data)
 
 void	ft_check_last_meal(t_data *data)
 {
+	int count;
 	gettimeofday(&data->new_meal, NULL);
-	if ((int)(((data->new_meal.tv_sec - data->philo.last_meal->tv_sec) * 1000)
-				+ ((data->new_meal.tv_usec - data->philo.last_meal->tv_usec) / 1000)) > data->die)
+	count = (int)(((data->new_meal.tv_sec - data->philo.last_meal->tv_sec) * 1000) + ((data->new_meal.tv_usec - data->philo.last_meal->tv_usec) / 1000));
+	if (count > data->die)
 		ft_die(data);
 
 }

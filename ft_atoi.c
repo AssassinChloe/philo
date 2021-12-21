@@ -6,7 +6,7 @@
 /*   By: cassassi <cassassi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 15:25:53 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/08 15:32:17 by cassassi         ###   ########.fr       */
+/*   Updated: 2021/12/21 16:12:03 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,3 +40,4 @@ int	ft_atoi(const char *str)
 	}
 	return (nb * neg);
 }
+

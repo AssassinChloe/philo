@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:44:38 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/21 09:38:34 by cassassi         ###   ########.fr       */
+/*   Updated: 2021/12/21 16:30:39 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,35 +25,44 @@
 # define FORK 24
 # define THINK 25
 # define DEATH 26
+#define FORK1 27
+# define FORK2 28
+
 
 typedef struct s_time
 {
-    struct timeval  start;
+	struct timeval  start;
 	struct timeval  current;
 }   t_time;
 
 typedef struct s_philo
 {
-    pthread_mutex_t fork;
-    pthread_mutex_t *borrow;
-    int name;
+	pthread_mutex_t fork;
+	pthread_mutex_t *borrow;
+	int name;
 	int *deadoralive;
-    int i;
-    int meal;
-    struct timeval *last_meal;
+	int i;
+	int meal;
+	struct timeval *last_meal;
 }	t_philo;
 
 typedef struct s_data
 {
-    t_time time;
-    t_philo philo;
-    int philo_nb;
-    int sleep;
-    int eat;
-    int die;
-    struct timeval new_meal;
-    pthread_mutex_t *display;
+	t_time time;
+	t_philo philo;
+	int philo_nb;
+	int sleep;
+	int eat;
+	int die;
+	struct timeval new_meal;
+	pthread_mutex_t *display;
 }   t_data;
+
+typedef struct s_init
+{
+
+
+} t_init;
 
 int ft_error(char *err);
 int ft_atoi(const char *str);

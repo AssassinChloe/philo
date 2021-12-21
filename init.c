@@ -6,13 +6,13 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 16:18:04 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/13 16:18:09 by cassassi         ###   ########.fr       */
+/*   Updated: 2021/12/21 16:20:36 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void ft_init_()
+void ft_init_data(t_data *data)
 {
 
 }
