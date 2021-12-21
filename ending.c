@@ -1,51 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   puttext.c                                          :+:      :+:    :+:   */
+/*   ending.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/16 15:08:52 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/21 19:03:26 by cassassi         ###   ########.fr       */
+/*   Created: 2021/12/21 17:59:52 by cassassi          #+#    #+#             */
+/*   Updated: 2021/12/21 19:16:19 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_putchar(char c)
+void	ft_ending(t_init *var, t_data *data)
 {
-	write(1, &c, 1);
-}
-
-void	ft_putstr(char *s)
-{
-	unsigned int	i;
+	int	i;
 
 	i = 0;
-	if (!(s))
-		return ;
-	while (s[i])
+	while (i < var->philosophers)
 	{
-		ft_putchar(s[i]);
+		pthread_join(var->th[i], NULL);
 		i++;
 	}
-}
-
-void	ft_putnbr(int n)
-{
-	long long int	nb;
-
-	nb = n;
-	if (nb < 0)
+	i = 0;
+	while (i < var->philosophers)
 	{
-		ft_putchar('-');
-		nb = -nb;
+		free(data[i].philo.last_meal);
+		pthread_mutex_destroy(&data[i].philo.fork);
+		i++;
 	}
-	if (nb > 9)
-	{
-		ft_putnbr(nb / 10);
-		ft_putchar(nb % 10 + '0');
-	}
-	else
-		ft_putchar(nb + '0');
+	pthread_mutex_destroy(var->display);
+	free(var->display);
+	free(var->th);
+	free(var->dead);
+	free(data);
+	free(var);
 }
