@@ -25,7 +25,7 @@ void	*isalive(void *arg)
 	data = (t_data *)arg;
 	while (*data->alive == 1)
 	{
-		usleep(9000);
+		usleep(8000);
 		ft_check_last_meal(data);
 	}
 	return (0);

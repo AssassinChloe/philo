@@ -86,8 +86,8 @@ int	ft_init_data(t_data *data, t_init *var, char **argv, int argc)
 			return (ft_error("some time arg are invalid"));
 		if (argc == 6)
 		{
-			data[i].philo.meal = ft_atoi(argv[5]);
-			if (data[i].philo.meal <= 0)
+			data[i].philo.meal = ft_atoi(argv[5]) + 1;
+			if (data[i].philo.meal <= 1)
 				return (ft_error("number of meals invalid"));
 		}
 		else
