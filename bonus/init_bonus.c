@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init.c                                             :+:      :+:    :+:   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,35 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
+#include "philo_bonus.h"
 
 void	ft_init_philo(t_data *data, t_init *var)
 {
 	int	i;
 
 	i = 0;
+	sem_init(var->semaphore, 0, var->philosophers);
 	while (i < var->philosophers)
 	{	
 		pthread_create(&var->th[i], NULL, &fonction, &data[i]);
 		i++;
 		usleep(10);
-	}
-}
-
-void	ft_init_forks(t_data *data, t_init *var)
-{
-	int	i;
-
-	i = 0;
-	while (i < var->philosophers)
-	{
-		if (var->philosophers == 1)
-			data[i].philo.borrow = NULL;
-		else if (i == (var->philosophers - 1))
-			data[i].philo.borrow = &data[0].philo.fork;
-		else
-			data[i].philo.borrow = &data[i + 1].philo.fork;
-		i++;
 	}
 }
 
@@ -50,7 +34,8 @@ int	ft_init_var(t_init *var, char **argv, int argc)
 	var->th = malloc(sizeof(pthread_t) * var->philosophers);
 	var->dead = malloc(sizeof(int));
 	var->display = malloc(sizeof(pthread_mutex_t));
-	if (!var->th || !var->dead || !var->display)
+	var->semaphore = malloc(sizeof(sem_t));
+	if (!var->th || !var->dead || !var->display || !var->semaphore)
 		return (ft_error("malloc"));
 	*var->dead = 1;
 	pthread_mutex_init(var->display, NULL);
@@ -61,6 +46,8 @@ int	ft_init_var(t_init *var, char **argv, int argc)
 int	ft_init_data_2(t_data *data, t_init *var, int i)
 {
 	data[i].display = var->display;
+	data[i].semaphore = var->semaphore;
+	data[i].philo_nb = var->philosophers;
 	data[i].philo.name = i + 1;
 	data[i].alive = var->dead;
 	data[i].time.start = var->init_time;
@@ -68,7 +55,6 @@ int	ft_init_data_2(t_data *data, t_init *var, int i)
 	if (!data[i].philo.last_meal)
 		return (ft_error("malloc"));
 	*data[i].philo.last_meal = var->init_time;
-	pthread_mutex_init(&data[i].philo.fork, NULL);
 	return (0);
 }
 
@@ -96,7 +82,6 @@ int	ft_init_data(t_data *data, t_init *var, char **argv, int argc)
 			return (1);
 		i++;
 	}
-	ft_init_forks(data, var);
 	ft_init_philo(data, var);
 	return (0);
 }

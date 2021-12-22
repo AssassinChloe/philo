@@ -15,11 +15,24 @@ NAME	= philo
 SRCS	= philo.c ft_atoi.c time.c lifeanddeathofaphilosopher.c display.c puttext.c\
   	  init.c ending.c
 
+BONUS	= philo_bonus
+
+BDIR	= bonus/
+
+BFILE	= philo_bonus.c ft_atoi_bonus.c time_bonus.c lifeanddeathofaphilosopher_bonus.c display_bonus.c puttext_bonus.c\
+  	  init_bonus.c ending_bonus.c
+
+BSRCS	= $(addprefix $(BDIR), $(BFILE))
+
 OBJSD	= .obj/
 
 OBJS	= $(addprefix $(OBJSD), $(SRCS:%.c=%.o))
 
+BOBJS	= $(BSRCS:%.c=%.o)
+
 INC	= -I philo.h
+
+BINC	= -I bonus/philo_bonus.h
 
 CC	= clang
 
@@ -32,12 +45,22 @@ $(NAME) :	$(OBJS)
 
 clean :
 				rm -rf $(OBJSD)
+				rm -rf $(BOBJS)
 
 fclean :	clean
 				rm -f $(NAME)
+				rm -f $(BONUS)
 
 re :		fclean all
+
+rebonus :	fclean bonus
+
+bonus :		$(BOBJS)
+				$(CC) -o $(BONUS) $(BOBJS) $(FLAGS)
 
 $(OBJSD)%.o:%.c
 		@mkdir -p $(OBJSD)
 		$(CC) $(INC) -o $@ -c $<
+
+$(BOBJSD)%.o:%.c
+		$(CC) $(BINC) -o $@ -c $<
