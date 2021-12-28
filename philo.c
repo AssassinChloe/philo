@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:38:06 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/22 14:43:12 by cassassi         ###   ########.fr       */
+/*   Updated: 2021/12/28 20:18:04 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +20,17 @@ int	ft_error(char *err)
 
 void	*isalive(void *arg)
 {
-	t_data	*data;
+	t_data	**data;
+	int i;
 
-	data = (t_data *)arg;
-	while (*data->alive == 1)
+	i = 0;
+	data = (t_data **)arg;
+	while (i < data[i]->philo_nb && *data[i]->alive == 1)
 	{
-		usleep(8000);
-		ft_check_last_meal(data);
+		ft_check_last_meal(data[i]);
+		i++;
+		if (i == data[i]->philo_nb)
+			i = 0;
 	}
 	return (0);
 }
@@ -48,27 +52,25 @@ int	ft_meal(t_data *data)
 void	*fonction(void *arg)
 {
 	t_data		*data;
-	pthread_t	checklife;
 
 	data = (t_data *)arg;
-	pthread_create(&checklife, NULL, &isalive, data);
 	if (data->philo.borrow == NULL)
 	{
-		pthread_join(checklife, NULL);
+		pthread_mutex_lock(&data->philo.fork);
+		ft_display_message(FORK, data);
+		usleep(data->die * 1000);
+		ft_check_last_meal(data);
+		pthread_mutex_unlock(&data->philo.fork);
 		return (0);
 	}
 	while (data->philo.meal != 0 && *data->alive == 1)
 	{
 		ft_fork(data);
 		if (ft_meal(data) == 1)
-		{
-			pthread_join(checklife, NULL);
 			return (0);
-		}	
 		ft_sleep(data);
 		ft_think(data);
 	}
-	pthread_join(checklife, NULL);
 	return (0);
 }
 
@@ -76,6 +78,7 @@ int	main(int argc, char **argv)
 {
 	t_data	*data;
 	t_init	*var;
+	pthread_t	checklife;
 
 	if (argc != 5 && argc != 6)
 		return (ft_error("nombre d'arguments"));
@@ -90,8 +93,11 @@ int	main(int argc, char **argv)
 		free(var);
 		return (ft_error("malloc"));
 	}
+	pthread_create(&checklife, NULL, &isalive, &data);
 	if (ft_init_data(data, var, argv, argc) == 1)
 		return (ft_free(data, var));
+	pthread_join(checklife, NULL);
 	ft_ending(var, data);
+
 	return (0);
 }

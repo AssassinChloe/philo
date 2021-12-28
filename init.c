@@ -21,7 +21,8 @@ void	ft_init_philo(t_data *data, t_init *var)
 	{	
 		pthread_create(&var->th[i], NULL, &fonction, &data[i]);
 		i++;
-		usleep(10);
+		// if (i % 2 == 0)
+			usleep(10);
 	}
 }
 
