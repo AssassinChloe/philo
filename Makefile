@@ -6,7 +6,7 @@
 #    By: cassassi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/12/03 13:27:24 by cassassi          #+#    #+#              #
-#    Updated: 2021/12/29 13:43:48 by cassassi         ###   ########.fr        #
+#    Updated: 2021/12/21 18:02:16 by cassassi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,6 +29,7 @@ all :		$(NAME)
 
 $(NAME) :	$(OBJS)
 				$(CC) -o $(NAME) $(OBJS) $(FLAGS)
+
 clean :
 				rm -rf $(OBJSD)
 
