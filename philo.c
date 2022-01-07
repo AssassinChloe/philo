@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:38:06 by cassassi          #+#    #+#             */
-/*   Updated: 2022/01/07 14:54:55 by cassassi         ###   ########.fr       */
+/*   Updated: 2022/01/07 16:11:23 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,10 @@ int	main(int argc, char **argv)
 	if (!var)
 		return (ft_error("malloc"));
 	if (ft_init_var(var, argv, argc) == 1)
+	{
+		free(var);
 		return (1);
+	}
 	data = malloc(sizeof(t_data) * var->philosophers);
 	if (!data)
 	{
