@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 14:59:15 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/29 18:57:32 by cassassi         ###   ########.fr       */
+/*   Updated: 2022/01/07 15:46:09 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_fork(t_data *data)
 {
+	ft_check_last_meal(data);
 	pthread_mutex_lock(&data->philo.fork);
 	ft_display_message(FORK, data);
 	pthread_mutex_lock(data->philo.borrow);
@@ -27,6 +28,8 @@ void	ft_eat(t_data *data)
 {
 	ft_last_meal(data);
 	ft_display_message(EAT, data);
+	if (data->philo.meal > 0)
+		data->philo.meal--;
 	usleep((data->eat * 1000));
 }
 

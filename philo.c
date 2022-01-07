@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:38:06 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/22 14:43:12 by cassassi         ###   ########.fr       */
+/*   Updated: 2022/01/07 14:54:55 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,10 @@ void	*isalive(void *arg)
 	t_data	*data;
 
 	data = (t_data *)arg;
-	while (*data->alive == 1)
+	while (data->philo.meal != 0 && *data->alive == 1)
 	{
 		usleep(9000);
 		ft_check_last_meal(data);
-	}
-	return (0);
-}
-
-int	ft_meal(t_data *data)
-{
-	if (data->philo.meal > 0)
-	{
-		data->philo.meal--;
-		if (data->philo.meal == 0)
-		{
-			*data->alive = -2;
-			return (1);
-		}
 	}
 	return (0);
 }
@@ -54,17 +40,13 @@ void	*fonction(void *arg)
 	pthread_create(&checklife, NULL, &isalive, data);
 	if (data->philo.borrow == NULL)
 	{
+		ft_display_message(FORK, data);
 		pthread_join(checklife, NULL);
 		return (0);
 	}
 	while (data->philo.meal != 0 && *data->alive == 1)
 	{
 		ft_fork(data);
-		if (ft_meal(data) == 1)
-		{
-			pthread_join(checklife, NULL);
-			return (0);
-		}	
 		ft_sleep(data);
 		ft_think(data);
 	}

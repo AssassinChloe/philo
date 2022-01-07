@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 16:18:04 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/22 14:25:03 by cassassi         ###   ########.fr       */
+/*   Updated: 2022/01/07 15:34:51 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,18 @@ void	ft_init_philo(t_data *data, t_init *var)
 
 	i = 0;
 	while (i < var->philosophers)
-	{	
-		pthread_create(&var->th[i], NULL, &fonction, &data[i]);
+	{
+		if (i % 2 == 0)
+			pthread_create(&var->th[i], NULL, &fonction, &data[i]);
 		i++;
-		usleep(50);
+	}
+	i = 0;
+	usleep(1000);
+	while (i < var->philosophers)
+	{
+		if (i % 2 != 0)
+			pthread_create(&var->th[i], NULL, &fonction, &data[i]);
+		i++;
 	}
 }
 

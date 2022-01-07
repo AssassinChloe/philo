@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:44:38 by cassassi          #+#    #+#             */
-/*   Updated: 2021/12/21 19:37:33 by cassassi         ###   ########.fr       */
+/*   Updated: 2022/01/07 15:36:21 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_philo
 	pthread_mutex_t	fork;
 	pthread_mutex_t	*borrow;
 	int				name;
-	int				i;
 	int				meal;
 	struct timeval	*last_meal;
 }	t_philo;
@@ -82,9 +81,6 @@ void	ft_init_philo(t_data *data, t_init *var);
 void	*fonction(void *arg);
 void	ft_ending(t_init *var, t_data *data);
 int		ft_free(t_data *data, t_init *var);
-void	ft_putchar(char c);
-void	ft_putstr(char *s);
-void	ft_putnbr(int n);
 void	ft_check_last_meal(t_data *data);
 
 #endif
