@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 13:44:38 by cassassi          #+#    #+#             */
-/*   Updated: 2022/01/07 15:36:21 by cassassi         ###   ########.fr       */
+/*   Updated: 2022/01/11 15:31:42 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,11 @@ typedef struct s_time
 typedef struct s_philo
 {
 	pthread_mutex_t	fork;
+	pthread_mutex_t meal_m;
 	pthread_mutex_t	*borrow;
 	int				name;
 	int				meal;
+	int				alive;
 	struct timeval	*last_meal;
 }	t_philo;
 
@@ -45,7 +47,7 @@ typedef struct s_data
 {
 	t_time			time;
 	t_philo			philo;
-	int				*alive;
+	int				*end_simulation;
 	int				philo_nb;
 	int				sleep;
 	int				eat;
@@ -73,14 +75,14 @@ void	ft_think(t_data *data);
 void	ft_die(t_data *data);
 void	ft_display_message(int str, t_data *data);
 void	ft_last_meal(t_data *data);
-int		ft_init_data(t_data *data, t_init *var, char **argv, int argc);
-int		ft_init_data_2(t_data *data, t_init *var, int i);
+int		ft_init_data(t_data **data, t_init *var, char **argv, int argc);
+int		ft_init_data_2(t_data **data, t_init *var, int i);
 int		ft_init_var(t_init *var, char **argv, int argc);
-void	ft_init_forks(t_data *data, t_init *var);
-void	ft_init_philo(t_data *data, t_init *var);
-void	*fonction(void *arg);
-void	ft_ending(t_init *var, t_data *data);
-int		ft_free(t_data *data, t_init *var);
+void	ft_init_forks(t_data **data, t_init *var);
+void	ft_init_philo(t_data **data, t_init *var);
+void	*the_matrix(void *arg);
+void	ft_ending(t_init *var, t_data **data);
+int		ft_free(t_data **data, t_init *var);
 void	ft_check_last_meal(t_data *data);
 
 #endif

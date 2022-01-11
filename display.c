@@ -6,7 +6,7 @@
 /*   By: cassassi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 15:13:12 by cassassi          #+#    #+#             */
-/*   Updated: 2022/01/07 15:33:59 by cassassi         ###   ########.fr       */
+/*   Updated: 2022/01/11 16:09:18 by cassassi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 void	ft_display_message(int str, t_data *data)
 {
 	pthread_mutex_lock(data->display);
-	if (*data->alive == 1 && data->philo.meal != 0)
+	pthread_mutex_lock(&data->philo.meal_m);
+	if (*data->end_simulation == 0 && data->philo.meal != 0)
 	{
+		pthread_mutex_unlock(&data->philo.meal_m);
 		printf("%d %d", ft_timer(&data->time), data->philo.name);
 		if (str == FORK)
 			printf(" has taken a fork\n");
@@ -28,9 +30,12 @@ void	ft_display_message(int str, t_data *data)
 			printf(" is thinking\n");
 		else if (str == DEATH)
 		{
-			*data->alive = -1;
+			data->philo.alive = 0;
 			printf(" died\n");
+			return ;
 		}
 	}
+	else
+		pthread_mutex_unlock(&data->philo.meal_m);
 	pthread_mutex_unlock(data->display);
 }
