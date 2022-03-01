@@ -28,7 +28,7 @@ FLAGS	= -pthread -Wall -Wextra -Werror
 all :		$(NAME)
 
 $(NAME) :	$(OBJS)
-				$(CC) -o $(NAME) $(OBJS) $(FLAGS)
+				$(CC) $(FLAGS) -o $(NAME) $(OBJS) 
 
 clean :
 				rm -rf $(OBJSD)
@@ -40,4 +40,4 @@ re :		fclean all
 
 $(OBJSD)%.o:%.c
 		@mkdir -p $(OBJSD)
-		$(CC) $(INC) -o $@ -c $<
+		$(CC) $(FLAGS) $(INC) -o $@ -c $<

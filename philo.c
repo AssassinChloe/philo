@@ -84,7 +84,7 @@ int	main(int argc, char **argv)
 	var = malloc(sizeof(t_init));
 	if (!var)
 		return (ft_error("malloc"));
-	if (ft_init_var(var, argv, argc) == 1)
+	if (ft_init_var(var, argv) == 1)
 	{
 		free(var);
 		return (1);

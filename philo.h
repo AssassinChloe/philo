@@ -77,12 +77,13 @@ void	ft_display_message(int str, t_data *data);
 void	ft_last_meal(t_data *data);
 int		ft_init_data(t_data **data, t_init *var, char **argv, int argc);
 int		ft_init_data_2(t_data **data, t_init *var, int i);
-int		ft_init_var(t_init *var, char **argv, int argc);
+int		ft_init_var(t_init *var, char **argv);
 void	ft_init_forks(t_data **data, t_init *var);
 void	ft_init_philo(t_data **data, t_init *var);
 void	*the_matrix(void *arg);
 void	ft_ending(t_init *var, t_data **data);
 int		ft_free(t_data **data, t_init *var);
 void	ft_check_last_meal(t_data *data);
+void	ft_check_vitals(t_data **data, int philosophers);
 
 #endif

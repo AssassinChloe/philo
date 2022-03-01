@@ -29,7 +29,7 @@ void	ft_init_forks(t_data **data, t_init *var)
 	}
 }
 
-int	ft_init_var(t_init *var, char **argv, int argc)
+int	ft_init_var(t_init *var, char **argv)
 {
 	var->philosophers = ft_atoi(argv[1]);
 	if (var->philosophers <= 0)
