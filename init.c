@@ -12,27 +12,6 @@
 
 #include "philo.h"
 
-void	ft_init_philo(t_data **data, t_init *var)
-{
-	int	i;
-
-	i = 0;
-	while (i < var->philosophers)
-	{
-		if (i % 2 == 0)
-			pthread_create(&var->th[i], NULL, &the_matrix, data[i]);
-		i++;
-	}
-	i = 0;
-	usleep(1000);
-	while (i < var->philosophers)
-	{
-		if (i % 2 != 0)
-			pthread_create(&var->th[i], NULL, &the_matrix, data[i]);
-		i++;
-	}
-}
-
 void	ft_init_forks(t_data **data, t_init *var)
 {
 	int	i;
@@ -82,6 +61,27 @@ int	ft_init_data_2(t_data **data, t_init *var, int i)
 	return (0);
 }
 
+int	ft_check_arg(char **argv, int argc, t_data **data, int i)
+{
+	data[i]->eat = ft_atoi(argv[3]);
+	data[i]->sleep = ft_atoi(argv[4]);
+	data[i]->die = ft_atoi(argv[2]);
+	if (data[i]->die <= 0 || data[i]->eat <= 0 || data[i]->sleep <= 0)
+	{
+		free(data[i]);
+		return (ft_error("some time arg are invalid"));
+	}
+	if (argc == 6)
+	{
+		data[i]->philo.meal = ft_atoi(argv[5]);
+		if (data[i]->philo.meal <= 0)
+			return (ft_error("number of meals invalid"));
+	}
+	else
+		data[i]->philo.meal = -1;
+	return (0);
+}
+
 int	ft_init_data(t_data **data, t_init *var, char **argv, int argc)
 {
 	int	i;
@@ -89,23 +89,9 @@ int	ft_init_data(t_data **data, t_init *var, char **argv, int argc)
 	i = 0;
 	while (i < var->philosophers)
 	{
-		data[i] = malloc(sizeof(t_data));	
-		data[i]->eat = ft_atoi(argv[3]);
-		data[i]->sleep = ft_atoi(argv[4]);
-		data[i]->die = ft_atoi(argv[2]);
-		if (data[i]->die <= 0 || data[i]->eat <= 0 || data[i]->sleep <= 0)
-		{
-			free(data[i]);
-			return (ft_error("some time arg are invalid"));
-		}
-		if (argc == 6)
-		{
-			data[i]->philo.meal = ft_atoi(argv[5]);
-			if (data[i]->philo.meal <= 0)
-				return (ft_error("number of meals invalid"));
-		}
-		else
-			data[i]->philo.meal = -1;
+		data[i] = malloc(sizeof(t_data));
+		if (ft_check_arg(argv, argc, data, i) == 1)
+			return (1);
 		if (ft_init_data_2(data, var, i) == 1)
 			return (1);
 		i++;

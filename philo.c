@@ -27,7 +27,7 @@ void	*isalive(void *arg)
 	{
 		usleep(1000);
 		pthread_mutex_lock(&data->philo.meal_m);
-	       	if (data->philo.meal == 0 || *data->end_simulation == 1)
+		if (data->philo.meal == 0 || *data->end_simulation == 1)
 		{
 			pthread_mutex_unlock(&data->philo.meal_m);
 			return (0);
@@ -36,6 +36,13 @@ void	*isalive(void *arg)
 		pthread_mutex_unlock(&data->philo.meal_m);
 	}
 	return (0);
+}
+
+void	philo_life(t_data *data)
+{
+	ft_fork(data);
+	ft_sleep(data);
+	ft_think(data);
 }
 
 void	*the_matrix(void *arg)
@@ -54,58 +61,17 @@ void	*the_matrix(void *arg)
 	while (1)
 	{
 		pthread_mutex_lock(&data->philo.meal_m);
-	      	if (data->philo.meal == 0 || *data->end_simulation == 1)
+		if (data->philo.meal == 0 || *data->end_simulation == 1)
 		{
 			pthread_mutex_unlock(&data->philo.meal_m);
 			pthread_join(checklife, NULL);
 			return (0);
 		}
 		pthread_mutex_unlock(&data->philo.meal_m);
-		ft_fork(data);
-		ft_sleep(data);
-		ft_think(data);
+		philo_life(data);
 	}
 	pthread_join(checklife, NULL);
 	return (0);
-}
-
-int	ft_all_done_eating(t_data **data, int philosophers)
-{
-	int	i;
-
-	i = 0;
-	while (i < philosophers)
-	{
-		pthread_mutex_lock(&data[i]->philo.meal_m);
-		if (data[i]->philo.meal != 0)
-		{
-			pthread_mutex_unlock(&data[i]->philo.meal_m);
-			return (0);
-		}
-		pthread_mutex_unlock(&data[i]->philo.meal_m);
-		i++;
-	}
-	return (1);
-}
-void	ft_check_vitals(t_data **data, int philosophers)
-{
-	int	i;
-
-	i = 0;
-	while (i < philosophers)
-	{
-		if (data[i]->philo.alive == 0)
-		{	
-			*data[i]->end_simulation = 1;
-			pthread_mutex_unlock(data[i]->display);
-			return ;
-		}
-		if (ft_all_done_eating(data, philosophers) == 1)
-			return ;
-		i++;
-		if (i == philosophers)
-			i = 0;
-	}
 }
 
 int	main(int argc, char **argv)
