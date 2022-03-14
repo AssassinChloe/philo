@@ -54,6 +54,7 @@ typedef struct s_data
 	int				die;
 	struct timeval	new_meal;
 	pthread_mutex_t	*display;
+	pthread_mutex_t	*check_vitals;
 }	t_data;
 
 typedef struct s_init
@@ -63,6 +64,7 @@ typedef struct s_init
 	int				*dead;
 	pthread_mutex_t	*display;
 	pthread_t		*th;
+	pthread_mutex_t	*check_vitals;
 }	t_init;
 
 int		ft_error(char *err);

@@ -35,5 +35,6 @@ void	ft_check_last_meal(t_data *data)
 		pthread_mutex_unlock(&data->philo.meal_m);
 		ft_die(data);
 	}
-	pthread_mutex_unlock(&data->philo.meal_m);
+	else
+		pthread_mutex_unlock(&data->philo.meal_m);
 }

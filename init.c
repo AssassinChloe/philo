@@ -37,10 +37,12 @@ int	ft_init_var(t_init *var, char **argv)
 	var->th = malloc(sizeof(pthread_t) * var->philosophers);
 	var->dead = malloc(sizeof(int));
 	var->display = malloc(sizeof(pthread_mutex_t));
-	if (!var->th || !var->dead || !var->display)
+	var->check_vitals = malloc(sizeof(pthread_mutex_t));
+	if (!var->th || !var->dead || !var->display || !var->check_vitals)
 		return (ft_error("malloc"));
 	*var->dead = 0;
 	pthread_mutex_init(var->display, NULL);
+	pthread_mutex_init(var->check_vitals, NULL);
 	gettimeofday(&var->init_time, NULL);
 	return (0);
 }
@@ -48,6 +50,7 @@ int	ft_init_var(t_init *var, char **argv)
 int	ft_init_data_2(t_data **data, t_init *var, int i)
 {
 	data[i]->display = var->display;
+	data[i]->check_vitals = var->check_vitals;
 	data[i]->philo.name = i + 1;
 	data[i]->philo.alive = 1;
 	data[i]->end_simulation = var->dead;

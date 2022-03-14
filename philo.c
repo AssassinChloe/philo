@@ -26,14 +26,16 @@ void	*isalive(void *arg)
 	while (1)
 	{
 		usleep(1000);
+		pthread_mutex_lock(data->check_vitals);
 		pthread_mutex_lock(&data->philo.meal_m);
 		if (data->philo.meal == 0 || *data->end_simulation == 1)
 		{
 			pthread_mutex_unlock(&data->philo.meal_m);
+			pthread_mutex_unlock(data->check_vitals);
 			return (0);
 		}
+		pthread_mutex_unlock(data->check_vitals);
 		ft_check_last_meal(data);
-		pthread_mutex_unlock(&data->philo.meal_m);
 	}
 	return (0);
 }
@@ -61,16 +63,18 @@ void	*the_matrix(void *arg)
 	while (1)
 	{
 		pthread_mutex_lock(&data->philo.meal_m);
+		pthread_mutex_lock(data->check_vitals);
 		if (data->philo.meal == 0 || *data->end_simulation == 1)
 		{
+			pthread_mutex_unlock(data->check_vitals);
 			pthread_mutex_unlock(&data->philo.meal_m);
 			pthread_join(checklife, NULL);
 			return (0);
 		}
+		pthread_mutex_unlock(data->check_vitals);
 		pthread_mutex_unlock(&data->philo.meal_m);
 		philo_life(data);
 	}
-	pthread_join(checklife, NULL);
 	return (0);
 }
 

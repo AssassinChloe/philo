@@ -16,6 +16,8 @@ int	ft_free(t_data **data, t_init *var)
 {
 	if (var->display)
 		free(var->display);
+	if (var->check_vitals)
+		free(var->check_vitals);
 	if (var->th)
 		free(var->th);
 	if (var->dead)
@@ -47,5 +49,6 @@ void	ft_ending(t_init *var, t_data **data)
 		i++;
 	}
 	pthread_mutex_destroy(var->display);
+	pthread_mutex_destroy(var->check_vitals);
 	ft_free(data, var);
 }

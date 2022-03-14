@@ -38,12 +38,14 @@ void	ft_check_vitals(t_data **data, int philosophers)
 	i = 0;
 	while (i < philosophers)
 	{
+		pthread_mutex_lock(data[i]->check_vitals);
 		if (data[i]->philo.alive == 0)
 		{	
 			*data[i]->end_simulation = 1;
-			pthread_mutex_unlock(data[i]->display);
+			pthread_mutex_unlock(data[i]->check_vitals);
 			return ;
 		}
+		pthread_mutex_unlock(data[i]->check_vitals);
 		if (ft_all_done_eating(data, philosophers) == 1)
 			return ;
 		i++;
