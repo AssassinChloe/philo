@@ -19,13 +19,8 @@ int	ft_all_done_eating(t_data **data, int philosophers)
 	i = 0;
 	while (i < philosophers)
 	{
-		pthread_mutex_lock(&data[i]->philo.meal_m);
 		if (data[i]->philo.meal != 0)
-		{
-			pthread_mutex_unlock(&data[i]->philo.meal_m);
 			return (0);
-		}
-		pthread_mutex_unlock(&data[i]->philo.meal_m);
 		i++;
 	}
 	return (1);
@@ -34,21 +29,28 @@ int	ft_all_done_eating(t_data **data, int philosophers)
 void	ft_check_vitals(t_data **data, int philosophers)
 {
 	int	i;
+	int	j;
+	int one;
 
 	i = 0;
+	j = 0;
+	one = 1;
 	while (i < philosophers)
 	{
-		pthread_mutex_lock(data[i]->check_vitals);
-		if (data[i]->philo.alive == 0)
-		{	
+		
+		if (ft_check_last_meal(data[i]) == 1)
+		{
 			*data[i]->end_simulation = 1;
-			pthread_mutex_unlock(data[i]->check_vitals);
+			pthread_mutex_unlock(data[i]->display);
 			return ;
 		}
-		pthread_mutex_unlock(data[i]->check_vitals);
 		if (ft_all_done_eating(data, philosophers) == 1)
+		{
+			*data[i]->end_simulation = 1;
 			return ;
+		}
 		i++;
+		usleep(500);
 		if (i == philosophers)
 			i = 0;
 	}

@@ -18,28 +18,6 @@ int	ft_error(char *err)
 	return (1);
 }
 
-void	*isalive(void *arg)
-{
-	t_data	*data;
-
-	data = (t_data *)arg;
-	while (1)
-	{
-		usleep(1000);
-		pthread_mutex_lock(data->check_vitals);
-		pthread_mutex_lock(&data->philo.meal_m);
-		if (data->philo.meal == 0 || *data->end_simulation == 1)
-		{
-			pthread_mutex_unlock(&data->philo.meal_m);
-			pthread_mutex_unlock(data->check_vitals);
-			return (0);
-		}
-		pthread_mutex_unlock(data->check_vitals);
-		ft_check_last_meal(data);
-	}
-	return (0);
-}
-
 void	philo_life(t_data *data)
 {
 	ft_fork(data);
@@ -50,29 +28,19 @@ void	philo_life(t_data *data)
 void	*the_matrix(void *arg)
 {
 	t_data		*data;
-	pthread_t	checklife;
 
 	data = (t_data *)arg;
-	pthread_create(&checklife, NULL, &isalive, data);
 	if (data->philo.borrow == NULL)
 	{
-		ft_display_message(FORK, data);
-		pthread_join(checklife, NULL);
+		ft_display_message(FORK, &data);
 		return (0);
 	}
 	while (1)
 	{
-		pthread_mutex_lock(&data->philo.meal_m);
-		pthread_mutex_lock(data->check_vitals);
-		if (data->philo.meal == 0 || *data->end_simulation == 1)
+		if (*data->end_simulation == 1)
 		{
-			pthread_mutex_unlock(data->check_vitals);
-			pthread_mutex_unlock(&data->philo.meal_m);
-			pthread_join(checklife, NULL);
 			return (0);
 		}
-		pthread_mutex_unlock(data->check_vitals);
-		pthread_mutex_unlock(&data->philo.meal_m);
 		philo_life(data);
 	}
 	return (0);

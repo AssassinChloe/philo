@@ -52,7 +52,6 @@ int	ft_init_data_2(t_data **data, t_init *var, int i)
 	data[i]->display = var->display;
 	data[i]->check_vitals = var->check_vitals;
 	data[i]->philo.name = i + 1;
-	data[i]->philo.alive = 1;
 	data[i]->end_simulation = var->dead;
 	data[i]->time.start = var->init_time;
 	data[i]->philo.last_meal = malloc(sizeof(struct timeval));

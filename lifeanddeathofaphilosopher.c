@@ -15,9 +15,9 @@
 void	ft_fork(t_data *data)
 {
 	pthread_mutex_lock(&data->philo.fork);
-	ft_display_message(FORK, data);
+	ft_display_message(FORK, &data);
 	pthread_mutex_lock(data->philo.borrow);
-	ft_display_message(FORK, data);
+	ft_display_message(FORK, &data);
 	ft_eat(data);
 	pthread_mutex_unlock(&data->philo.fork);
 	pthread_mutex_unlock(data->philo.borrow);
@@ -28,7 +28,7 @@ void	ft_eat(t_data *data)
 	pthread_mutex_lock(&data->philo.meal_m);
 	ft_last_meal(data);
 	pthread_mutex_unlock(&data->philo.meal_m);
-	ft_display_message(EAT, data);
+	ft_display_message(EAT, &data);
 	if (data->philo.meal > 0)
 	{
 		pthread_mutex_lock(&data->philo.meal_m);
@@ -40,16 +40,12 @@ void	ft_eat(t_data *data)
 
 void	ft_sleep(t_data *data)
 {
-	ft_display_message(SLEEP, data);
+	ft_display_message(SLEEP, &data);
 	usleep(data->sleep * 1000);
 }
 
 void	ft_think(t_data *data)
 {
-	ft_display_message(THINK, data);
+	ft_display_message(THINK, &data);
 }
 
-void	ft_die(t_data *data)
-{
-	ft_display_message(DEATH, data);
-}

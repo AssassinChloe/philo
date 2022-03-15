@@ -25,7 +25,7 @@ void	ft_last_meal(t_data *data)
 	*data->philo.last_meal = data->new_meal;
 }
 
-void	ft_check_last_meal(t_data *data)
+int	ft_check_last_meal(t_data *data)
 {
 	gettimeofday(&data->new_meal, NULL);
 	if ((((int)(data->new_meal.tv_sec - data->philo.last_meal->tv_sec) * 1000)
@@ -33,8 +33,9 @@ void	ft_check_last_meal(t_data *data)
 		/ 1000)) > data->die)
 	{
 		pthread_mutex_unlock(&data->philo.meal_m);
-		ft_die(data);
+		ft_display_message(DEATH, &data);
+		return (1);
 	}
-	else
-		pthread_mutex_unlock(&data->philo.meal_m);
+	pthread_mutex_unlock(&data->philo.meal_m);
+	return (0);	
 }
