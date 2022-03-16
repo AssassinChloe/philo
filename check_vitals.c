@@ -54,7 +54,6 @@ void	ft_check_vitals(t_data **data, int philosophers)
 			return ;
 		}
 		i++;
-		usleep(500);
 		if (i == philosophers)
 			i = 0;
 	}

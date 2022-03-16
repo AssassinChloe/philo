@@ -19,10 +19,23 @@ int	ft_timer(t_time *time)
 			+ ((time->current.tv_usec - time->start.tv_usec) / 1000));
 }
 
-void	ft_last_meal(t_data *data)
+int	ft_new_meal(t_data *data)
 {
+	pthread_mutex_lock(&data->philo.meal_m);
 	gettimeofday(&data->new_meal, NULL);
+	if ((((int)(data->new_meal.tv_sec - data->philo.last_meal->tv_sec) * 1000)
+		+ ((int)(data->new_meal.tv_usec - data->philo.last_meal->tv_usec)
+		/ 1000)) > data->die)
+	{
+		pthread_mutex_unlock(&data->philo.meal_m);
+		pthread_mutex_lock(data->check_vitals);
+		*data->end_simulation = 1;
+		pthread_mutex_unlock(data->check_vitals);
+		return (1);
+	}
 	*data->philo.last_meal = data->new_meal;
+	pthread_mutex_unlock(&data->philo.meal_m);
+	return (0);
 }
 
 int	ft_check_last_meal(t_data *data)

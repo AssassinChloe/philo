@@ -14,7 +14,7 @@
 
 int	ft_error(char *err)
 {
-	printf("Error %s\n", err);
+	printf("Error : %s\n", err);
 	return (1);
 }
 
@@ -50,13 +50,34 @@ void	*the_matrix(void *arg)
 	return (0);
 }
 
+void	ft_init_philo(t_data **data, t_init *var)
+{
+	int	i;
+
+	i = 0;
+	while (i < var->philosophers)
+	{
+		if (i % 2 == 0)
+			pthread_create(&var->th[i], NULL, &the_matrix, data[i]);
+		i++;
+	}
+	i = 0;
+	usleep(1000);
+	while (i < var->philosophers)
+	{
+		if (i % 2 != 0)
+			pthread_create(&var->th[i], NULL, &the_matrix, data[i]);
+		i++;
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_data	**data;
 	t_init	*var;
 
-	if (argc != 5 && argc != 6)
-		return (ft_error("nombre d'arguments"));
+	if (argc < 5 || argc > 6)
+		return (ft_error("wrong number of arguments"));
 	var = malloc(sizeof(t_init));
 	if (!var)
 		return (ft_error("malloc"));
@@ -73,6 +94,7 @@ int	main(int argc, char **argv)
 	}
 	if (ft_init_data(data, var, argv, argc) == 1)
 		return (ft_free(data, var));
+	ft_init_philo(data, var);
 	ft_check_vitals(data, var->philosophers);
 	ft_ending(var, data);
 	return (0);

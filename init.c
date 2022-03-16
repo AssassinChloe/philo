@@ -29,24 +29,6 @@ void	ft_init_forks(t_data **data, t_init *var)
 	}
 }
 
-int	ft_init_var(t_init *var, char **argv)
-{
-	var->philosophers = ft_atoi(argv[1]);
-	if (var->philosophers <= 0)
-		return (ft_error("number of philosophers invalid"));
-	var->th = malloc(sizeof(pthread_t) * var->philosophers);
-	var->dead = malloc(sizeof(int));
-	var->display = malloc(sizeof(pthread_mutex_t));
-	var->check_vitals = malloc(sizeof(pthread_mutex_t));
-	if (!var->th || !var->dead || !var->display || !var->check_vitals)
-		return (ft_error("malloc"));
-	*var->dead = 0;
-	pthread_mutex_init(var->display, NULL);
-	pthread_mutex_init(var->check_vitals, NULL);
-	gettimeofday(&var->init_time, NULL);
-	return (0);
-}
-
 int	ft_init_data_2(t_data **data, t_init *var, int i)
 {
 	data[i]->display = var->display;
@@ -77,7 +59,10 @@ int	ft_check_arg(char **argv, int argc, t_data **data, int i)
 	{
 		data[i]->philo.meal = ft_atoi(argv[5]);
 		if (data[i]->philo.meal <= 0)
+		{
+			free(data[i]);
 			return (ft_error("number of meals invalid"));
+		}
 	}
 	else
 		data[i]->philo.meal = -1;
@@ -99,6 +84,23 @@ int	ft_init_data(t_data **data, t_init *var, char **argv, int argc)
 		i++;
 	}
 	ft_init_forks(data, var);
-	ft_init_philo(data, var);
+	return (0);
+}
+
+int	ft_init_var(t_init *var, char **argv)
+{
+	var->philosophers = ft_atoi(argv[1]);
+	if (var->philosophers <= 0)
+		return (ft_error("number of philosophers invalid"));
+	var->th = malloc(sizeof(pthread_t) * var->philosophers);
+	var->dead = malloc(sizeof(int));
+	var->display = malloc(sizeof(pthread_mutex_t));
+	var->check_vitals = malloc(sizeof(pthread_mutex_t));
+	if (!var->th || !var->dead || !var->display || !var->check_vitals)
+		return (ft_error("malloc"));
+	*var->dead = 0;
+	pthread_mutex_init(var->display, NULL);
+	pthread_mutex_init(var->check_vitals, NULL);
+	gettimeofday(&var->init_time, NULL);
 	return (0);
 }

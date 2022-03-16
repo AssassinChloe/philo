@@ -25,9 +25,14 @@ void	ft_fork(t_data *data)
 
 void	ft_eat(t_data *data)
 {
-	pthread_mutex_lock(&data->philo.meal_m);
-	ft_last_meal(data);
-	pthread_mutex_unlock(&data->philo.meal_m);
+	if (ft_new_meal(data) == 1)
+	{
+		ft_display_message(DEATH, data);
+		pthread_mutex_lock(data->check_vitals);
+		*data->end_simulation = 1;
+		pthread_mutex_unlock(data->check_vitals);
+		return ;
+	}
 	ft_display_message(EAT, data);
 	if (data->philo.meal > 0)
 	{
