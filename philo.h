@@ -73,7 +73,7 @@ void	ft_fork(t_data *data);
 void	ft_eat(t_data *data);
 void	ft_sleep(t_data *data);
 void	ft_think(t_data *data);
-void	ft_display_message(int str, t_data **data);
+void	ft_display_message(int str, t_data *data);
 void	ft_last_meal(t_data *data);
 int		ft_init_data(t_data **data, t_init *var, char **argv, int argc);
 int		ft_init_data_2(t_data **data, t_init *var, int i);

@@ -32,15 +32,19 @@ void	*the_matrix(void *arg)
 	data = (t_data *)arg;
 	if (data->philo.borrow == NULL)
 	{
-		ft_display_message(FORK, &data);
+		ft_display_message(FORK, data);
 		return (0);
 	}
 	while (1)
 	{
+		pthread_mutex_lock(data->check_vitals);
 		if (*data->end_simulation == 1)
 		{
+			pthread_mutex_unlock(data->check_vitals);
 			return (0);
 		}
+		else
+			pthread_mutex_unlock(data->check_vitals);
 		philo_life(data);
 	}
 	return (0);
